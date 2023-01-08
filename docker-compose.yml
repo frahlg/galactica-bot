@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  web:
+    build: web-front
+    ports:
+      - "80:80"
+    volumes:
+      - ./web-front:/app
+    environment:
+      - FLASK_DEBUG=True
+  backend-galactica:
+    build: backend-galactica
+    volumes:
+      - ./backend-galactica:/app
+    environment:
+      - FLASK_DEBUG=True
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  backend-whisper:
+    build: backend-whisper
